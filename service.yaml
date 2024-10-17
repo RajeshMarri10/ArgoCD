@@ -1,13 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
+  labels:
+    app.kubernetes.io/instance: rajeshargocd
   name: nginx-nodeport-service
+  namespace: airflow
 spec:
-  type: NodePort  # This makes the service accessible on a node's IP address
+  ports:
+    - nodePort: 30007
+      port: 80
+      protocol: TCP
+      targetPort: 80
   selector:
     app: nginx
-  ports:
-    - port: 80         # The port that the service will expose
-      targetPort: 80    # The port where the container is running Nginx
-      nodePort: 30007   # The node's port you want to expose (optional, otherwise automatically assigned)
-      protocol: TCP
+  type: NodePort
